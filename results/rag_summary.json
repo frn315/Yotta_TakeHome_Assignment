@@ -1,0 +1,127 @@
+{
+  "dataset": {
+    "source": "ms_marco_v1.1",
+    "num_queries": 50,
+    "num_passages": 406
+  },
+  "providers": {
+    "llm": {
+      "provider": "llama",
+      "model": "llama3.1:8b",
+      "base_url": "http://localhost:11434/v1",
+      "key_set": false
+    },
+    "embedding": {
+      "provider": "llama",
+      "model": "nomic-embed-text",
+      "base_url": "http://localhost:11434/v1",
+      "key_set": false
+    }
+  },
+  "config": {
+    "chunk_words": 40,
+    "chunk_overlap": 10,
+    "top_k": 5,
+    "retriever": "hybrid",
+    "chunker": "sentence",
+    "grader": "threshold",
+    "grade_threshold": 0.5,
+    "max_rewrites": 1,
+    "workers": 2
+  },
+  "retrieval": [
+    {
+      "chunker": "fixed",
+      "retriever": "dense",
+      "num_chunks": 1012,
+      "num_queries": 50,
+      "recall@1": 0.29,
+      "recall@3": 0.77,
+      "recall@5": 0.91,
+      "mrr@10": 0.5629,
+      "mean_query_ms": 16.95,
+      "index_build_ms": 11875.4
+    },
+    {
+      "chunker": "fixed",
+      "retriever": "bm25",
+      "num_chunks": 1012,
+      "num_queries": 50,
+      "recall@1": 0.24,
+      "recall@3": 0.66,
+      "recall@5": 0.86,
+      "mrr@10": 0.5052,
+      "mean_query_ms": 0.048,
+      "index_build_ms": 16.8
+    },
+    {
+      "chunker": "fixed",
+      "retriever": "hybrid",
+      "num_chunks": 1012,
+      "num_queries": 50,
+      "recall@1": 0.32,
+      "recall@3": 0.72,
+      "recall@5": 0.89,
+      "mrr@10": 0.5645,
+      "mean_query_ms": 18.52,
+      "index_build_ms": 14761.1
+    },
+    {
+      "chunker": "sentence",
+      "retriever": "dense",
+      "num_chunks": 1030,
+      "num_queries": 50,
+      "recall@1": 0.32,
+      "recall@3": 0.7,
+      "recall@5": 0.89,
+      "mrr@10": 0.5482,
+      "mean_query_ms": 463.793,
+      "index_build_ms": 52551.9
+    },
+    {
+      "chunker": "sentence",
+      "retriever": "bm25",
+      "num_chunks": 1030,
+      "num_queries": 50,
+      "recall@1": 0.23,
+      "recall@3": 0.61,
+      "recall@5": 0.84,
+      "mrr@10": 0.4793,
+      "mean_query_ms": 0.064,
+      "index_build_ms": 23.1
+    },
+    {
+      "chunker": "sentence",
+      "retriever": "hybrid",
+      "num_chunks": 1030,
+      "num_queries": 50,
+      "recall@1": 0.25,
+      "recall@3": 0.62,
+      "recall@5": 0.91,
+      "mrr@10": 0.5059,
+      "mean_query_ms": 14.193,
+      "index_build_ms": 13204.9
+    }
+  ],
+  "end_to_end": {
+    "num_queries": 50,
+    "failed_queries": 0,
+    "answer_f1_mean": 0.2967,
+    "faithfulness_lexical_mean": 0.89,
+    "faithfulness_llm_mean": 0.9386,
+    "recall@5": 0.78,
+    "relevant_in_context_rate": 0.78,
+    "abstention_rate": 0.12,
+    "rewrite_rate": 0.02,
+    "latency_ms": {
+      "p50": 4551.71,
+      "p95": 57142.17,
+      "mean": 10986.13,
+      "retrieve_mean": 862.78,
+      "grade_mean": 0.18,
+      "rewrite_mean": 140.44,
+      "generate_mean": 9982.18
+    }
+  },
+  "retrieval_failures": 31
+}

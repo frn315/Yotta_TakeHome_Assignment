@@ -1,0 +1,81 @@
+{
+  "providers": {
+    "llm": {
+      "provider": "llama",
+      "model": "llama3.1:8b",
+      "base_url": "http://localhost:11434/v1",
+      "key_set": false
+    },
+    "embedding": {
+      "provider": "llama",
+      "model": "nomic-embed-text",
+      "base_url": "http://localhost:11434/v1",
+      "key_set": false
+    }
+  },
+  "generation": {
+    "scenarios": 3,
+    "valid_rate": 1.0,
+    "requested_sections_rate": 1.0,
+    "details": [
+      {
+        "scenario": "fitness-studio",
+        "valid": true,
+        "sections": [
+          "hero",
+          "features",
+          "testimonials",
+          "pricing",
+          "contact"
+        ],
+        "requested_sections_present": true,
+        "latency_ms": 196267.0,
+        "repairs": 1
+      },
+      {
+        "scenario": "bakery",
+        "valid": true,
+        "sections": [
+          "hero",
+          "text",
+          "features",
+          "cta",
+          "contact"
+        ],
+        "requested_sections_present": true,
+        "latency_ms": 70153.7,
+        "repairs": 0
+      },
+      {
+        "scenario": "saas",
+        "valid": true,
+        "sections": [
+          "hero",
+          "features",
+          "testimonials",
+          "pricing",
+          "cta",
+          "contact"
+        ],
+        "requested_sections_present": true,
+        "latency_ms": 115147.0,
+        "repairs": 0
+      }
+    ]
+  },
+  "edits": {
+    "total": 16,
+    "success_rate_valid_requests": 0.7857,
+    "by_type": {
+      "content": 0.75,
+      "style": 0.75,
+      "structure": 0.8333
+    },
+    "invalid_requests_rejected_cleanly": 0.5,
+    "earlier_edits_preserved_rate": 1.0,
+    "untouched_sections_identical_rate": 1.0,
+    "mean_attempts": 1.21,
+    "latency_ms_mean": 31911.63,
+    "latency_ms_max": 131684.1
+  }
+}

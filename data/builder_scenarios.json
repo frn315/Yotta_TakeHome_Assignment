@@ -1,0 +1,42 @@
+{
+  "note": "Evaluation scenarios for the website builder. Each scenario generates a site from `brief`, then applies `edits` in order. After every edit we check its own expectation AND re-check all earlier expectations in the scenario (do earlier edits survive?). `rejected` edits must fail cleanly and leave the state untouched.",
+  "scenarios": [
+    {
+      "name": "fitness-studio",
+      "brief": "Create a modern landing page for a fitness studio with pricing, testimonials, and a contact form",
+      "expect_sections": ["hero", "pricing", "testimonials", "contact"],
+      "edits": [
+        {"instruction": "Make the hero section darker", "type": "style", "expect": {"kind": "style_changed", "section_type": "hero", "property": "background"}},
+        {"instruction": "Change the CTA to Book a Trial", "type": "content", "expect": {"kind": "content", "section_type": "hero", "path": "cta_label", "equals": "Book a Trial"}},
+        {"instruction": "Add a features section after the hero", "type": "structure", "expect": {"kind": "order", "first": "hero", "then": "features"}},
+        {"instruction": "Move testimonials above pricing", "type": "structure", "expect": {"kind": "order", "first": "testimonials", "then": "pricing"}},
+        {"instruction": "Change the pricing heading to Membership plans", "type": "content", "expect": {"kind": "content", "section_type": "pricing", "path": "heading", "equals": "Membership plans"}},
+        {"instruction": "Make the footer sparkle", "type": "invalid", "expect": {"kind": "rejected"}}
+      ]
+    },
+    {
+      "name": "bakery",
+      "brief": "A warm, minimal one-page site for a neighbourhood bakery with an about section, features and a call to action",
+      "expect_sections": ["hero", "text", "features", "cta"],
+      "edits": [
+        {"instruction": "Change the headline to Fresh bread, every morning", "type": "content", "expect": {"kind": "content", "section_type": "hero", "path": "headline", "equals": "Fresh bread, every morning"}},
+        {"instruction": "Change the primary colour to orange", "type": "style", "expect": {"kind": "theme_changed", "property": "primary"}},
+        {"instruction": "Add a testimonials section", "type": "structure", "expect": {"kind": "has_section", "section_type": "testimonials"}},
+        {"instruction": "Remove the features section", "type": "structure", "expect": {"kind": "no_section", "section_type": "features"}},
+        {"instruction": "Remove the pricing section", "type": "invalid", "expect": {"kind": "rejected"}}
+      ]
+    },
+    {
+      "name": "saas",
+      "brief": "Landing page for a project management SaaS with features, pricing and reviews",
+      "expect_sections": ["hero", "features", "pricing", "testimonials"],
+      "edits": [
+        {"instruction": "Make the pricing background navy", "type": "style", "expect": {"kind": "style_changed", "section_type": "pricing", "property": "background"}},
+        {"instruction": "Left align the features section", "type": "style", "expect": {"kind": "style", "section_type": "features", "property": "align", "equals": "left"}},
+        {"instruction": "Add a contact section", "type": "structure", "expect": {"kind": "has_section", "section_type": "contact"}},
+        {"instruction": "Move the pricing to the bottom", "type": "structure", "expect": {"kind": "last", "section_type": "pricing"}},
+        {"instruction": "Change the button to Start free trial", "type": "content", "expect": {"kind": "content", "section_type": "hero", "path": "cta_label", "equals": "Start free trial"}}
+      ]
+    }
+  ]
+}

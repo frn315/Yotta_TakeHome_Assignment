@@ -1,0 +1,529 @@
+[
+  {
+    "chunker": "fixed",
+    "retriever": "dense",
+    "query_id": "9653",
+    "query": "how much do bartenders make",
+    "relevant_ids": [
+      "m8778b1af22"
+    ],
+    "top5": [
+      "md4eeb3d22d",
+      "m07f6052286",
+      "mfd4a479f7f",
+      "md635a07c0b",
+      "mbfb2ca4c9d"
+    ],
+    "top1_text": "Report Abuse. no way to tell you how much bartenders make. in wages anything from minimum to $15 an hour. tips, anywhere from $20 to $300 or more a night. depends on a lot of things. those top dollar "
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "dense",
+    "query_id": "9662",
+    "query": "cost to file bankruptcy in virginia",
+    "relevant_ids": [
+      "md386e93597"
+    ],
+    "top5": [
+      "m38e5f91a3c",
+      "m2b621f3e4d",
+      "mab05b055ba",
+      "m16849d99fb",
+      "mef5497e6f6"
+    ],
+    "top1_text": "If you want to file for bankruptcy in Virginia, you will need to include some Virginia-specific information on your bankruptcy forms. You\u2019ll also need to know about the Virginia exemptions because fed"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "dense",
+    "query_id": "9679",
+    "query": "ovulation usually occurs on day _____ of a woman's cycle",
+    "relevant_ids": [
+      "m51f3e58e23"
+    ],
+    "top5": [
+      "m6017ca674a",
+      "me744f7c06a",
+      "m448517c986",
+      "m5d72343ccd",
+      "m0e25b2efc6"
+    ],
+    "top1_text": "The day of ovulation differs from woman to woman and can even be different from month to month for an individual woman. For a woman with a 28 day cycle, the window of ovulation is day 11 through day 2"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "dense",
+    "query_id": "9688",
+    "query": "how does laser measure distance",
+    "relevant_ids": [
+      "m0483c215e7"
+    ],
+    "top5": [
+      "mabfd30ca14",
+      "m09daaa45ce",
+      "mb415230b4d",
+      "m339eb306ed",
+      "m4190b11491"
+    ],
+    "top1_text": "SUMMARY A Laser Distance Meter sendsa pulse of laser light to the target and measuresthe time it takesforthe reflection to return.For distances up to 30m, the accuracy is\u00c93mm. Is\u00e93mm-on board processi"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "bm25",
+    "query_id": "9653",
+    "query": "how much do bartenders make",
+    "relevant_ids": [
+      "m8778b1af22"
+    ],
+    "top5": [
+      "m923c87c64e",
+      "mbfb2ca4c9d",
+      "md4eeb3d22d",
+      "md635a07c0b",
+      "md9930839cc"
+    ],
+    "top1_text": "Confidence votes 11. Bartenders in Vegas can make up to $7-$15 wage plus $10-$50 in tips per hour. But that totally depends on personality, gender and outlet. A hot young female can make $1000 a day t"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "bm25",
+    "query_id": "9661",
+    "query": "where was movie the birds filmed",
+    "relevant_ids": [
+      "m0cdc209165"
+    ],
+    "top5": [
+      "m9bfc04fa34",
+      "m1eb54674d4",
+      "md36be95b8b",
+      "mf27c634dd0",
+      "md01460e1c6"
+    ],
+    "top1_text": "The location scenes in the Alfred Hitchcock-directed film, The Birds (1963), were filmed in Bodega Bay. The town markets itself with the film in many ways, including its Birds-themed Visitors' Center."
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "bm25",
+    "query_id": "9662",
+    "query": "cost to file bankruptcy in virginia",
+    "relevant_ids": [
+      "md386e93597"
+    ],
+    "top5": [
+      "m38e5f91a3c",
+      "m2b621f3e4d",
+      "mef5497e6f6",
+      "m16849d99fb",
+      "me01d53be21"
+    ],
+    "top1_text": "If you want to file for bankruptcy in Virginia, you will need to include some Virginia-specific information on your bankruptcy forms. You\u2019ll also need to know about the Virginia exemptions because fed"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "bm25",
+    "query_id": "9667",
+    "query": "want is tom cruise doing now",
+    "relevant_ids": [
+      "m3ab66cb89d"
+    ],
+    "top5": [
+      "m3bead969fa",
+      "mb25d7a9fdf",
+      "mac9d21c12f",
+      "m64c8192480",
+      "mb841bb9c97"
+    ],
+    "top1_text": "Domingo said that even if Holmes left Cruise to protect her daughter from the church, he likely won't give up on bringing her back to the religion. According to Scientology doctrine, Katie has denied "
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "bm25",
+    "query_id": "9689",
+    "query": "what is the statue of on the capitol building",
+    "relevant_ids": [
+      "mf18bc9ac37"
+    ],
+    "top5": [
+      "m818010d9a8",
+      "m9817bcd929",
+      "m2051513905",
+      "m4a0d2a7540",
+      "m16d9650918"
+    ],
+    "top1_text": "Slave Who Built the Statue on Top of the Capitol Building Finally to Be Honored. The Statue of Freedom that sits on top of the U.S. Capitol Building is an iconic part of the D.C. skyline. But not many"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "bm25",
+    "query_id": "9692",
+    "query": "what type of enzyme is aldolase",
+    "relevant_ids": [
+      "m0d9bc886fb"
+    ],
+    "top5": [
+      "mc90fcc1933",
+      "m61e3f642d5",
+      "m90999de2af",
+      "m9da9f6786e",
+      "mcc12866430"
+    ],
+    "top1_text": "(redirected from Liver-type aldolase). A gene on chromosome 9q21.3-q22.2 that encodes aldolase B (fructose-bisphosphate aldolase), a glycolytic enzyme that catalyses the reversible conversion of fruct"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "hybrid",
+    "query_id": "9653",
+    "query": "how much do bartenders make",
+    "relevant_ids": [
+      "m8778b1af22"
+    ],
+    "top5": [
+      "md4eeb3d22d",
+      "md635a07c0b",
+      "mbfb2ca4c9d",
+      "m923c87c64e",
+      "m07f6052286"
+    ],
+    "top1_text": "Report Abuse. no way to tell you how much bartenders make. in wages anything from minimum to $15 an hour. tips, anywhere from $20 to $300 or more a night. depends on a lot of things. those top dollar "
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "hybrid",
+    "query_id": "9661",
+    "query": "where was movie the birds filmed",
+    "relevant_ids": [
+      "m0cdc209165"
+    ],
+    "top5": [
+      "m9bfc04fa34",
+      "md36be95b8b",
+      "md01460e1c6",
+      "mf27c634dd0",
+      "m1eb54674d4"
+    ],
+    "top1_text": "The location scenes in the Alfred Hitchcock-directed film, The Birds (1963), were filmed in Bodega Bay. The town markets itself with the film in many ways, including its Birds-themed Visitors' Center."
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "hybrid",
+    "query_id": "9662",
+    "query": "cost to file bankruptcy in virginia",
+    "relevant_ids": [
+      "md386e93597"
+    ],
+    "top5": [
+      "m38e5f91a3c",
+      "m2b621f3e4d",
+      "mab05b055ba",
+      "mef5497e6f6",
+      "m16849d99fb"
+    ],
+    "top1_text": "If you want to file for bankruptcy in Virginia, you will need to include some Virginia-specific information on your bankruptcy forms. You\u2019ll also need to know about the Virginia exemptions because fed"
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "hybrid",
+    "query_id": "9667",
+    "query": "want is tom cruise doing now",
+    "relevant_ids": [
+      "m3ab66cb89d"
+    ],
+    "top5": [
+      "m39a8e6d0fb",
+      "m3bead969fa",
+      "mac9d21c12f",
+      "m4cf9d1dfd7",
+      "mb841bb9c97"
+    ],
+    "top1_text": "Tom Cruise has had ENOUGH of Hollywood! A source reveals the 53-year-old is selling his Southern California property because he just doesn't want to live in this city anymore! Tom hates living in L.A."
+  },
+  {
+    "chunker": "fixed",
+    "retriever": "hybrid",
+    "query_id": "9673",
+    "query": "how long to get masters degree",
+    "relevant_ids": [
+      "m7fcd079846"
+    ],
+    "top5": [
+      "m9c8d9e23e3",
+      "m211688a395",
+      "m5ac166adf5",
+      "m04ec950177",
+      "m1714085225"
+    ],
+    "top1_text": "The average full-time student will earn their Master\u2019s degree in 1.5 to 2 years, but some students take longer due to their schedule restrictions. If you consider the time it takes to earn a Bachelor\u2019"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "dense",
+    "query_id": "9653",
+    "query": "how much do bartenders make",
+    "relevant_ids": [
+      "m8778b1af22"
+    ],
+    "top5": [
+      "md4eeb3d22d",
+      "m07f6052286",
+      "mfd4a479f7f",
+      "mbfb2ca4c9d",
+      "md635a07c0b"
+    ],
+    "top1_text": "Report Abuse. no way to tell you how much bartenders make. in wages anything from minimum to $15 an hour. tips, anywhere from $20 to $300 or more a night. depends on a lot of things. those top dollar "
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "dense",
+    "query_id": "9662",
+    "query": "cost to file bankruptcy in virginia",
+    "relevant_ids": [
+      "md386e93597"
+    ],
+    "top5": [
+      "m38e5f91a3c",
+      "m2b621f3e4d",
+      "mab05b055ba",
+      "mef5497e6f6",
+      "m16849d99fb"
+    ],
+    "top1_text": "If you want to file for bankruptcy in Virginia, you will need to include some Virginia-specific information on your bankruptcy forms. You\u2019ll also need to know about the Virginia exemptions because fed"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "dense",
+    "query_id": "9668",
+    "query": "what means irie",
+    "relevant_ids": [
+      "m396c9f983e"
+    ],
+    "top5": [
+      "mf4865f2cdf",
+      "mdf34b9bb00",
+      "m1cdc323381",
+      "m5856b7250c",
+      "m4278b94241"
+    ],
+    "top1_text": "The meaning of 'irie' is a slang meaning. The word 'irie' refers to a state of being. In this state of being, people feel that everything is great, awesome, and wonderful."
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "dense",
+    "query_id": "9688",
+    "query": "how does laser measure distance",
+    "relevant_ids": [
+      "m0483c215e7"
+    ],
+    "top5": [
+      "mabfd30ca14",
+      "m09daaa45ce",
+      "mead774d0a7",
+      "mb415230b4d",
+      "m339eb306ed"
+    ],
+    "top1_text": "SUMMARY A Laser Distance Meter sendsa pulse of laser light to the target and measuresthe time it takesforthe reflection to return.For distances up to 30m, the accuracy is\u00c93mm. Is\u00e93mm-on board processi"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "dense",
+    "query_id": "9691",
+    "query": "sustainability is also referred to as",
+    "relevant_ids": [
+      "mce4f21967b"
+    ],
+    "top5": [
+      "mb50a8fea4e",
+      "m86d75b2f2e",
+      "m04a503b43c",
+      "m0a883b1d34",
+      "m8dc417b22f"
+    ],
+    "top1_text": "Part of the Compliance glossary: Business sustainability, also known as corporate sustainability, is the management and coordination of environmental, social and financial demands and concerns to ensu"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9652",
+    "query": "walgreens store sales average",
+    "relevant_ids": [
+      "mca6482ed64"
+    ],
+    "top5": [
+      "m9fb6bd3a77",
+      "m6b337b5f3b",
+      "m183bf7bb7b",
+      "mbbdda7d716",
+      "m3fc8736501"
+    ],
+    "top1_text": "Your Walgreens Store. Select a store from the search results to make it Your Walgreens Store and save time getting what you need. Your Walgreens Store will be the default location for picking up presc"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9653",
+    "query": "how much do bartenders make",
+    "relevant_ids": [
+      "m8778b1af22"
+    ],
+    "top5": [
+      "m923c87c64e",
+      "md4eeb3d22d",
+      "mbfb2ca4c9d",
+      "md635a07c0b",
+      "mfd4a479f7f"
+    ],
+    "top1_text": "Confidence votes 11. Bartenders in Vegas can make up to $7-$15 wage plus $10-$50 in tips per hour. But that totally depends on personality, gender and outlet. A hot young female can make $1000 a day t"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9662",
+    "query": "cost to file bankruptcy in virginia",
+    "relevant_ids": [
+      "md386e93597"
+    ],
+    "top5": [
+      "mef5497e6f6",
+      "m38e5f91a3c",
+      "m2b621f3e4d",
+      "m16849d99fb",
+      "mab05b055ba"
+    ],
+    "top1_text": "It now costs $306 to file for bankruptcy under chapter 7 and $281 to file for bankruptcy under chapter 13, whether for one person or a married couple. The court may allow you to pay this filing fee in"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9667",
+    "query": "want is tom cruise doing now",
+    "relevant_ids": [
+      "m3ab66cb89d"
+    ],
+    "top5": [
+      "mb25d7a9fdf",
+      "mac9d21c12f",
+      "m64c8192480",
+      "m39a8e6d0fb",
+      "mb841bb9c97"
+    ],
+    "top1_text": "In his deposition, Bauer's lawyers asked Cruise if both he and the church now consider Holmes to be a Suppressive Person after leaving the church. \u201cThat is a distortion and a simplification of the mat"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9675",
+    "query": "replacing permanent resident card canada",
+    "relevant_ids": [
+      "m50f3e0ce5a"
+    ],
+    "top5": [
+      "me3e25e5583",
+      "m92bcf64574",
+      "m52a377f1f9",
+      "m1d0ec384b0",
+      "ma902a1551f"
+    ],
+    "top1_text": "The Permanent Resident Card (. ) is the official proof of your status as a permanent resident in Canada. A. Card is a document required by permanent residents, including children, who plan on travelli"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9689",
+    "query": "what is the statue of on the capitol building",
+    "relevant_ids": [
+      "mf18bc9ac37"
+    ],
+    "top5": [
+      "m818010d9a8",
+      "m9817bcd929",
+      "m2051513905",
+      "m4a0d2a7540",
+      "m186a60bd80"
+    ],
+    "top1_text": "Slave Who Built the Statue on Top of the Capitol Building Finally to Be Honored. The Statue of Freedom that sits on top of the U.S. Capitol Building is an iconic part of the D.C. skyline. But not many"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "bm25",
+    "query_id": "9692",
+    "query": "what type of enzyme is aldolase",
+    "relevant_ids": [
+      "m0d9bc886fb"
+    ],
+    "top5": [
+      "mc90fcc1933",
+      "m61e3f642d5",
+      "m90999de2af",
+      "m9da9f6786e",
+      "mcc12866430"
+    ],
+    "top1_text": "(redirected from Liver-type aldolase). A gene on chromosome 9q21.3-q22.2 that encodes aldolase B (fructose-bisphosphate aldolase), a glycolytic enzyme that catalyses the reversible conversion of fruct"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "hybrid",
+    "query_id": "9653",
+    "query": "how much do bartenders make",
+    "relevant_ids": [
+      "m8778b1af22"
+    ],
+    "top5": [
+      "md4eeb3d22d",
+      "mbfb2ca4c9d",
+      "m923c87c64e",
+      "m07f6052286",
+      "mfd4a479f7f"
+    ],
+    "top1_text": "Report Abuse. no way to tell you how much bartenders make. in wages anything from minimum to $15 an hour. tips, anywhere from $20 to $300 or more a night. depends on a lot of things. those top dollar "
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "hybrid",
+    "query_id": "9662",
+    "query": "cost to file bankruptcy in virginia",
+    "relevant_ids": [
+      "md386e93597"
+    ],
+    "top5": [
+      "m38e5f91a3c",
+      "m2b621f3e4d",
+      "mef5497e6f6",
+      "mab05b055ba",
+      "m16849d99fb"
+    ],
+    "top1_text": "If you want to file for bankruptcy in Virginia, you will need to include some Virginia-specific information on your bankruptcy forms. You\u2019ll also need to know about the Virginia exemptions because fed"
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "hybrid",
+    "query_id": "9668",
+    "query": "what means irie",
+    "relevant_ids": [
+      "m396c9f983e"
+    ],
+    "top5": [
+      "mf4865f2cdf",
+      "mdf34b9bb00",
+      "m1cdc323381",
+      "m5856b7250c",
+      "m4278b94241"
+    ],
+    "top1_text": "The meaning of 'irie' is a slang meaning. The word 'irie' refers to a state of being. In this state of being, people feel that everything is great, awesome, and wonderful."
+  },
+  {
+    "chunker": "sentence",
+    "retriever": "hybrid",
+    "query_id": "9688",
+    "query": "how does laser measure distance",
+    "relevant_ids": [
+      "m0483c215e7"
+    ],
+    "top5": [
+      "m09daaa45ce",
+      "mabfd30ca14",
+      "m5a933a8f8f",
+      "mb415230b4d",
+      "mdcc2e9f0c9"
+    ],
+    "top1_text": "Laser Entfernungsmesser image by Otmar Smit from Fotolia.com. A laser distance meter works by use measuring the time it takes a pulse of laser light to be reflected off a target and returned to the se"
+  }
+]

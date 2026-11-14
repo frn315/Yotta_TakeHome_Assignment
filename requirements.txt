@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+httpx>=0.27
+numpy>=1.26
+pytest>=8.0
+# Optional: only needed to download the MS MARCO subset from Hugging Face.
+# Without it (or without network) the RAG pipeline uses data/sample_passages.json.
+datasets>=2.19

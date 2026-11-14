@@ -1,0 +1,7 @@
+chunker,retriever,num_chunks,num_queries,recall@1,recall@3,recall@5,mrr@10,mean_query_ms,index_build_ms
+fixed,dense,1012,50,0.29,0.77,0.91,0.5629,16.95,11875.4
+fixed,bm25,1012,50,0.24,0.66,0.86,0.5052,0.048,16.8
+fixed,hybrid,1012,50,0.32,0.72,0.89,0.5645,18.52,14761.1
+sentence,dense,1030,50,0.32,0.7,0.89,0.5482,463.793,52551.9
+sentence,bm25,1030,50,0.23,0.61,0.84,0.4793,0.064,23.1
+sentence,hybrid,1030,50,0.25,0.62,0.91,0.5059,14.193,13204.9

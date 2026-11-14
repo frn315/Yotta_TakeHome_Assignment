@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PromptSite · RAG</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="chat" id="chat" aria-live="polite"></div>
+    <div class="chips" id="chips"></div>
+    <form class="composer" id="composer">
+      <textarea id="input" rows="2" aria-label="Question" placeholder="Ask a question about the indexed documents"></textarea>
+      <button class="primary round" id="send" type="submit" aria-label="Ask" title="Ask"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#send"/></svg></button>
+    </form>
+  </aside>
+  <main class="main">
+    <div class="bar">
+      <strong id="corpusTitle">Loading documents...</strong><span class="badge" id="corpusSize" hidden></span>
+      <span class="grow"></span>
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabDocuments" aria-selected="true" aria-controls="documentsPane"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#document"/></svg>Documents</button>
+        <button role="tab" id="tabSources" aria-selected="false" aria-controls="sourcesPane"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#sources"/></svg>Sources</button>
+        <button role="tab" id="tabActivity" aria-selected="false" aria-controls="activityPane"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#activity"/></svg>Activity <span class="count" id="logCount">0</span></button>
+      </div>
+    </div>
+    <div class="stage" id="sourcesPane" role="tabpanel" hidden>
+      <ol class="cards" id="sources"><li class="empty"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#sources"/></svg>The passages behind the latest answer appear here, numbered as they are cited.</li></ol>
+    </div>
+    <div class="stage" id="documentsPane" role="tabpanel">
+      <section class="panel">
+        <h2><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#document"/></svg>Indexed now</h2>
+        <dl class="facts" id="facts"></dl>
+      </section>
+      <section class="panel">
+        <h2><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#upload"/></svg>Use your own documents</h2>
+        <p>Choose text or Markdown files, or paste text. They replace the current index: each document is cleaned, split into chunks and indexed for retrieval.</p>
+        <label class="drop"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#upload"/></svg><span id="fileNames">Choose text or Markdown files</span><input type="file" id="files" multiple accept=".txt,.md,.markdown,text/plain"></label>
+        <div class="row"><textarea id="paste" rows="5" aria-label="Pasted text" placeholder="...or paste text here"></textarea></div>
+        <div class="row"><button class="primary" id="index"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#upload"/></svg>Index documents</button><button id="reset">Use the default corpus</button><span id="indexStatus" role="status"></span></div>
+      </section>
+    </div>
+    <div class="stage" id="activityPane" role="tabpanel" hidden>
+      <ol class="timeline" id="log"><li class="empty"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#activity"/></svg>Every pipeline step is listed here: each retrieval, how many passages passed the grader, query rewrites, and the prompt sent to the model with its reply.</li></ol>
+    </div>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+<script>
+const KIND = {
+  question: ["Question", "start", e => e.question],
+  retrieved: ["Retrieved", "", e => `"${e.query}" · ${e.hits} chunks · ${e.relevant} passed the grader`],
+  query_rewritten: ["Query rewritten", "model", e => e.query],
+  rewrite_stopped: ["Rewrite stopped", "bad", e => e.reason],
+  grade_parse_failed: ["Grader fallback", "bad", e => `LLM grader reply unreadable, used ${e.fallback}`],
+  abstained: ["Abstained", "bad", e => `${e.reason} after ${e.queries.length} quer${e.queries.length === 1 ? "y" : "ies"}`],
+  answered: ["Answer generated", "good", e => `from ${e.contexts} passage${e.contexts === 1 ? "" : "s"}`],
+  request_failed: ["Request failed", "bad", e => `${e.code}: ${e.message}`],
+  indexed: ["Documents indexed", "start", e => `${plural(e.documents, "document")} · ${plural(e.chunks, "chunk")} · ${e.retriever} retrieval`],
+};
+let busy = false;
+
+function showCorpus(info) {   // single place where the header and facts follow the index
+  $("corpusTitle").textContent = info.source === "uploaded" ? "Your documents" : "Default corpus: " + info.source;
+  $("corpusSize").textContent = `${plural(info.documents, "document")} · ${plural(info.chunks, "chunk")}`; $("corpusSize").hidden = false;
+  const facts = { Source: info.source, Documents: info.documents, Chunks: info.chunks, Chunking: info.chunker, Retrieval: info.retriever,
+                  Grader: info.grader, Embeddings: `${info.embedding.provider} · ${info.embedding.model}`, "Answer model": `${info.llm.provider} · ${info.llm.model}` };
+  $("facts").innerHTML = Object.entries(facts).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("");
+  $("chips").innerHTML = "";   // example questions come from the corpus itself; uploaded documents have none
+  for (const q of info.examples) { const b = document.createElement("button"); b.type = "button"; b.textContent = q; b.onclick = () => ask(q); $("chips").appendChild(b); }
+}
+function setBusy(on) { busy = on; for (const id of ["send", "input", "index", "reset"]) $(id).disabled = on; }
+
+async function ask(text) {
+  const question = (text ?? $("input").value).trim(); if (!question || busy) return;
+  $("input").value = ""; bubble("user", question);
+  const pending = bubble("bot busy", "Retrieving and reading");
+  setBusy(true);
+  const { ok, data } = await api("/api/rag/ask", { question });
+  pending.remove(); setBusy(false); addEvents(data.events); $("input").focus();
+  if (!ok) return bubble("err", data.error.message);
+  const div = bubble("bot", data.answer);   // abstaining is a valid answer, not an error
+  const t = data.timings_ms, rewrites = data.queries_tried.length - 1;
+  div.insertAdjacentHTML("beforeend", `<div class="meta"><span>${plural(data.contexts.length, "source")} · ${plural(rewrites, "rewrite")} · ${(t.total / 1000).toFixed(1)} s</span><button type="button">View sources</button></div>`);
+  div.querySelector(".meta button").onclick = () => showTab("tabSources");
+  $("chat").scrollTop = $("chat").scrollHeight; showTab("tabSources");
+  $("sources").innerHTML = data.contexts.length
+    ? data.contexts.map((c, i) => `<li class="source"><header><b>[${i + 1}]</b><span>${esc(c.document)}</span><span class="grow"></span><span>grade ${c.grade} · retrieval score ${c.retrieval_score}</span></header>${esc(c.text)}</li>`).join("")
+    : `<li class="empty">${icon("sources")}No passage passed the grader, so the pipeline did not answer.</li>`;
+}
+
+async function indexDocuments(documents) {
+  setBusy(true); $("indexStatus").textContent = "Indexing...";
+  const { ok, data } = await api("/api/rag/documents", { documents });
+  setBusy(false); addEvents(data.events);
+  $("indexStatus").textContent = ok ? "Indexed." : data.error.message;
+  if (!ok) return;
+  showCorpus(data); $("files").value = ""; $("paste").value = ""; $("fileNames").textContent = "Choose text or Markdown files";
+  bubble("bot", `Indexed ${plural(data.documents, "document")} as ${plural(data.chunks, "chunk")}. Ask a question about ${data.source === "uploaded" ? "them" : "the default corpus"}.`);
+}
+$("index").onclick = async () => {
+  const documents = await Promise.all([...$("files").files].map(async f => ({ name: f.name, text: await f.text() })));
+  if ($("paste").value.trim()) documents.push({ name: "pasted-text", text: $("paste").value });
+  if (!documents.length) { $("indexStatus").textContent = "Choose a file or paste some text first."; return; }
+  indexDocuments(documents);
+};
+$("reset").onclick = () => indexDocuments([]);
+$("files").onchange = () => { const f = [...$("files").files]; $("fileNames").textContent = f.length ? f.map(x => x.name).join(", ") : "Choose text or Markdown files"; };
+$("composer").onsubmit = e => { e.preventDefault(); ask(); };
+$("input").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(); } });
+$("chat").innerHTML = `<div class="hint">${icon("chat")}<b>Ask your documents</b>Answers use only the indexed passages and cite them like [1]. If nothing relevant is found, the pipeline says so instead of guessing. Add your own files under Documents.</div>`;
+api("/api/rag/corpus").then(({ ok, data }) => { showProvider(data); if (ok) showCorpus(data); else $("corpusTitle").textContent = "No documents indexed"; });
+</script>
+</body>
+</html>

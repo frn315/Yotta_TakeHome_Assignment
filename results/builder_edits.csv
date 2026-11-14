@@ -1,0 +1,17 @@
+scenario,step,type,instruction,applied,correct,earlier_edits_preserved,untouched_sections_identical,attempts,latency_ms,ops,error
+fitness-studio,1,style,Make the hero section darker,True,True,,True,1,13610.0,"[{""op"":""update_style"",""section_id"":""hero"",""property"":""background"",""value"":""#2E6DA4""}]",
+fitness-studio,2,content,Change the CTA to Book a Trial,True,True,True,True,1,10832.1,"[{""op"":""update_content"",""section_id"":""hero"",""path"":""props.cta_label"",""value"":""Book a Trial""}]",
+fitness-studio,3,structure,Add a features section after the hero,True,True,True,,1,14821.6,"[{""op"":""add_section"",""section_type"":""features"",""after_id"":""hero"",""index"":null,""props"":{""heading"":""What We Offer"",""items"":[{""title"":""Personalized Workouts"",""description"":""Get tailored fitness plans to suit your needs""},{""title"":""Expert Trainers"",""description"":""Get guidance from certified fitness professionals""},{""title"":""State-of-the-Art Equipment"",""description"":""Use the latest fitness technology to reach your goals""},{""title"":""Small Class Sizes"",""description"":""Get the attention you need to succeed""}]}}]",
+fitness-studio,4,structure,Move testimonials above pricing,True,True,True,,1,12224.4,"[{""op"":""move_section"",""section_id"":""testimonials"",""to_index"":2}]",
+fitness-studio,5,content,Change the pricing heading to Membership plans,True,True,True,True,1,12968.4,"[{""op"":""update_content"",""section_id"":""pricing"",""path"":""props.heading"",""value"":""Membership plans""}]",
+fitness-studio,6,invalid,Make the footer sparkle,True,False,True,,1,12034.5,"[{""op"":""update_style"",""section_id"":""features-2"",""property"":""background"",""value"":""#2e6da4""}]",
+bakery,1,content,"Change the headline to Fresh bread, every morning",True,True,,True,1,131684.1,"[{""op"":""update_content"",""section_id"":""hero"",""path"":""props.headline"",""value"":""Fresh bread, every morning""}]",
+bakery,2,style,Change the primary colour to orange,True,True,True,,2,22130.1,"[{""op"":""update_theme"",""property"":""primary"",""value"":""#ffcc00""}]",
+bakery,3,structure,Add a testimonials section,True,True,True,,3,41736.4,"[{""op"":""add_section"",""section_type"":""testimonials"",""after_id"":""features"",""index"":null,""props"":{""heading"":""Our customers say"",""items"":[{""quote"":""Great service!"",""author"":""John Doe""}]}}]",
+bakery,4,structure,Remove the features section,True,True,True,,1,9959.1,"[{""op"":""remove_section"",""section_id"":""features""}]",
+bakery,5,invalid,Remove the pricing section,False,True,,,,63796.4,,No section with id 'pricing'
+saas,1,style,Make the pricing background navy,True,True,,True,1,90763.0,"[{""op"":""update_style"",""section_id"":""pricing"",""property"":""background"",""value"":""#2f4f7f""}]",
+saas,2,style,Left align the features section,False,False,,,,38300.6,,"No valid result after 3 attempts. Last problem: These operations change nothing. Emit ops that implement the request, or set 'error'."
+saas,3,structure,Add a contact section,True,True,True,,1,12624.2,"[{""op"":""add_section"",""section_type"":""contact"",""after_id"":null,""index"":null,""props"":{}}]",
+saas,4,structure,Move the pricing to the bottom,True,False,True,,1,12722.1,"[{""op"":""move_section"",""section_id"":""pricing"",""to_index"":5}]",
+saas,5,content,Change the button to Start free trial,True,False,True,True,1,10379.1,"[{""op"":""update_content"",""section_id"":""cta"",""path"":""props.button_label"",""value"":""Start free trial""}]",

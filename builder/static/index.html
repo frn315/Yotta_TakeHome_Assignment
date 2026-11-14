@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PromptSite</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="chat" id="chat" aria-live="polite"></div>
+    <div class="chips" id="chips"></div>
+    <form class="composer" id="composer">
+      <textarea id="input" rows="2" aria-label="Message"></textarea>
+      <button class="primary round" id="send" type="submit" aria-label="Generate"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#send"/></svg></button>
+    </form>
+  </aside>
+  <main class="main">
+    <div class="bar">
+      <strong id="siteTitle">No website yet</strong><span class="badge" id="version" hidden></span>
+      <span class="grow"></span>
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabPreview" aria-selected="true" aria-controls="previewPane"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#eye"/></svg>Preview</button>
+        <button role="tab" id="tabActivity" aria-selected="false" aria-controls="activityPane"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#activity"/></svg>Activity <span class="count" id="logCount">0</span></button>
+      </div>
+      <button id="undo" disabled><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#undo"/></svg>Undo</button>
+      <button id="fresh" disabled><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#plus"/></svg>New site</button>
+    </div>
+    <div class="stage" id="previewPane" role="tabpanel"><div class="preview" id="preview"><div class="empty"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#builder"/></svg>Your website appears here.</div></div></div>
+    <div class="stage" id="activityPane" role="tabpanel" hidden>
+      <ol class="timeline" id="log"><li class="empty"><svg class="icon" aria-hidden="true"><use href="/static/icons.svg#activity"/></svg>Every agent step is listed here: what was sent to the model, what it replied, what was rejected and what changed.</li></ol>
+    </div>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+<script>
+const state = { siteId: null, version: 0, site: null, busy: false };
+const BRIEFS = ["A modern landing page for a fitness studio with pricing, testimonials and a contact form",
+  "A cosy neighbourhood coffee shop with a menu highlights section and contact details",
+  "A SaaS product page for a team calendar app with features and pricing"];
+const EDITS = ["Make the hero section darker", "Change the CTA to Book a Trial", "Add a features section after the hero",
+  "Move testimonials above pricing", "Remove the contact section", "Change the primary colour to green"];
+
+const safeUrl = u => /^(https?:\/\/|#|mailto:|\/)/i.test(u || "") ? esc(u) : "#";
+
+// ---- component library: one renderer per section type in the schema ----
+const RENDER = {
+  hero: (p, t) => `<h2>${esc(p.headline)}</h2><p>${esc(p.subheadline)}</p><a class="btn" style="background:${t.primary}" href="${safeUrl(p.cta_href)}">${esc(p.cta_label)}</a>`,
+  text: p => `<h3>${esc(p.heading)}</h3><p>${esc(p.body)}</p>`,
+  image: p => (p.url ? `<img src="${safeUrl(p.url)}" alt="${esc(p.alt)}">` : `<div class="ph">Image placeholder: ${esc(p.alt)}</div>`) + (p.caption ? `<p class="caption">${esc(p.caption)}</p>` : ""),
+  features: p => `<h3>${esc(p.heading)}</h3><div class="grid">${p.items.map(i => `<div class="card"><h4>${esc(i.title)}</h4><div>${esc(i.description)}</div></div>`).join("")}</div>`,
+  testimonials: p => `<h3>${esc(p.heading)}</h3><div class="grid">${p.items.map(i => `<div class="card"><div class="quote">&ldquo;${esc(i.quote)}&rdquo;</div><div class="who">${esc(i.author)}${i.role ? ", " + esc(i.role) : ""}</div></div>`).join("")}</div>`,
+  pricing: (p, t) => `<h3>${esc(p.heading)}</h3><div class="grid">${p.plans.map(pl => `<div class="card ${pl.highlighted ? "hl" : ""}" style="${pl.highlighted ? "border-color:" + t.primary : ""}"><h4>${esc(pl.name)}</h4><div class="price">${esc(pl.price)} <small>/ ${esc(pl.period)}</small></div><ul>${pl.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div>`).join("")}</div>`,
+  cta: (p, t) => `<h3>${esc(p.heading)}</h3>${p.body ? `<p>${esc(p.body)}</p>` : ""}<a class="btn" style="background:${t.primary}" href="${safeUrl(p.button_href)}">${esc(p.button_label)}</a>`,
+  contact: (p, t) => `<h3>${esc(p.heading)}</h3>${p.body ? `<p>${esc(p.body)}</p>` : ""}${p.email ? `<p><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></p>` : ""}<form class="contact" onsubmit="return false">${p.fields.map(f => f === "message" ? `<textarea rows="3" placeholder="Message"></textarea>` : `<input type="text" placeholder="${f[0].toUpperCase() + f.slice(1)}">`).join("")}<button class="btn" style="background:${t.primary};border:0" type="submit">${esc(p.submit_label)}</button></form>`,
+};
+const FONTS = { sans: 'system-ui, -apple-system, "Segoe UI", sans-serif', serif: 'Georgia, "Times New Roman", serif', mono: 'ui-monospace, Menlo, monospace' };
+
+function renderSite(site) {
+  const t = site.theme;
+  return `<div style="background:${t.background};color:${t.text};font-family:${FONTS[t.font]}">` + site.sections.map(s => {
+    const render = RENDER[s.type];
+    const body = render ? render(s.props, t) : `<p>Unsupported section type: ${esc(s.type)}</p>`;
+    const st = s.style || {};
+    const css = (st.background ? `background:${st.background};` : "") + (st.text_color ? `color:${st.text_color};` : "") + `text-align:${st.align || "center"};`;
+    return `<section class="sec ${esc(s.type)} pad-${st.padding || "md"} ${st.align === "left" ? "left" : ""}" id="${esc(s.id)}" style="${css}"><span class="tag">${esc(s.id)}</span><div class="inner">${body}</div></section>`;
+  }).join("") + `</div>`;
+}
+
+// ---- activity: one row per agent event, details on demand ----
+const KIND = {
+  generate_started: ["Generation started", "start", e => e.brief],
+  edit_started: ["Edit requested", "start", e => e.instruction],
+  llm_call: ["Model call", "model", e => `${e.step} · ${e.model} · attempt ${e.attempt} · ${(e.latency_ms / 1000).toFixed(1)} s`],
+  plan: ["Plan", "", e => (e.sections || []).join(", ") || "no plan returned"],
+  site_generated: ["Site generated", "good", e => e.sections.join(", ")],
+  validation_failed: ["Output rejected", "bad", e => e.errors],
+  edit_operation: ["Change", "", e => change(e, false)],
+  edit_applied: ["Edit applied", "good", e => `${e.ops} operation${e.ops === 1 ? "" : "s"} · attempt ${e.attempt}`],
+  edit_declined: ["Edit declined", "bad", e => e.reason],
+  generate_failed: ["Generation failed", "bad", e => e.errors],
+  edit_failed: ["Edit failed", "bad", e => e.errors],
+  request_failed: ["Request failed", "bad", e => `${e.code}: ${e.message}`],
+  undo: ["Undo", "start", e => `now v${e.version}, restored v${e.restored_from}`],
+};
+const short = v => { const s = typeof v === "string" ? v : JSON.stringify(v); return s.length > 48 ? s.slice(0, 45) + "..." : s; };
+const value = (v, html) => html && /^#[0-9a-f]{6}$/.test(v) ? `<i class="sw" style="background:${v}"></i>${v}` : html ? esc(short(v)) : short(v);
+function change(e, html) {   // one edit operation in plain words
+  const where = [e.section_id, e.path || e.property].filter(Boolean).join(" · ");
+  const name = html ? esc(where) : where, id = html ? esc(e.section_id) : e.section_id;
+  if (e.op === "add_section") return `added ${id} at position ${e.index + 1}`;
+  if (e.op === "remove_section") return `removed ${id}`;
+  if (e.op === "move_section") return `moved ${id} from position ${e.from + 1} to ${e.to + 1}`;
+  return `${e.op === "update_title" ? "title" : e.op === "update_theme" ? "theme · " + name : name}: ${value(e.old, html)} → ${value(e.new, html)}`;
+}
+// ---- conversation ----
+function say(cls, text, events) {
+  const div = bubble(cls, text);
+  const ops = (events || []).filter(e => e.kind === "edit_operation");
+  if (ops.length) div.insertAdjacentHTML("beforeend", `<ul class="changes">${ops.map(e => `<li>${change(e, true)}</li>`).join("")}</ul>`);
+  if (events && events.length) {
+    const calls = events.filter(e => e.kind === "llm_call"), secs = calls.reduce((t, e) => t + e.latency_ms, 0) / 1000;
+    div.insertAdjacentHTML("beforeend", `<div class="meta"><span>${calls.length} model call${calls.length === 1 ? "" : "s"} · ${secs.toFixed(1)} s</span><button type="button">View activity</button></div>`);
+    div.querySelector(".meta button").onclick = () => showTab("tabActivity");
+  }
+  $("chat").scrollTop = $("chat").scrollHeight;
+  return div;
+}
+function refresh() {   // single place where the controls follow state
+  const has = !!state.siteId;
+  $("input").placeholder = has ? "Ask for a change, e.g. make the hero section darker" : "Describe the website you want";
+  $("send").title = has ? "Send change" : "Generate website"; $("send").setAttribute("aria-label", $("send").title);
+  $("send").disabled = $("input").disabled = state.busy;
+  $("undo").disabled = state.busy || !has || state.version <= 1;
+  $("fresh").disabled = state.busy || !has;
+  $("chips").innerHTML = "";
+  for (const s of has ? EDITS : BRIEFS) { const b = document.createElement("button"); b.type = "button"; b.textContent = s; b.disabled = state.busy; b.onclick = () => send(s); $("chips").appendChild(b); }
+}
+function sync(data) {  // single place where the preview follows server state
+  state.siteId = data.site_id; state.version = data.version; state.site = data.site;
+  $("preview").innerHTML = renderSite(data.site);
+  $("siteTitle").textContent = data.site.title; $("version").textContent = "v" + data.version; $("version").hidden = false;
+}
+async function send(text) {   // the first message is the brief, every later one is an edit
+  const message = (text ?? $("input").value).trim(); if (!message || state.busy) return;
+  const editing = !!state.siteId;
+  $("input").value = ""; say("user", message);
+  const pending = say("bot busy", editing ? "Working out the change" : "Planning and writing the site");
+  state.busy = true; refresh();
+  const { ok, data } = editing ? await api(`/api/sites/${state.siteId}/edit`, { instruction: message, base_version: state.version })
+                               : await api("/api/sites", { brief: message });
+  pending.remove(); state.busy = false; addEvents(data.events);
+  if (!ok) say("err", (editing ? `Not applied, the preview is still v${state.version}. ` : "Could not generate the site. ") + data.error.message, data.events);
+  else {
+    sync(data);
+    say("bot", editing ? data.explanation : `Created "${data.site.title}" with ${data.site.sections.length} sections: ${data.site.sections.map(s => s.id).join(", ")}. Now tell me what to change.`, data.events);
+  }
+  refresh(); $("input").focus();
+}
+async function undo() {
+  const { ok, data } = await api(`/api/sites/${state.siteId}/undo`, {});
+  addEvents(data.events);
+  if (!ok) return say("err", data.error.message);
+  sync(data); refresh(); say("bot", `Reverted. The preview is now v${data.version}.`);
+}
+
+$("composer").onsubmit = e => { e.preventDefault(); send(); };
+$("input").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
+$("undo").onclick = undo;
+$("fresh").onclick = () => { state.siteId = null; state.version = 0; refresh(); say("bot", "Describe the new website. The current preview stays until it is replaced."); };
+$("chat").innerHTML = `<div class="hint">${icon("builder")}<b>What should we build?</b>Describe the website in a sentence. After it is generated, keep typing here to change it.</div>`;
+refresh();
+api("/api/health").then(({ data }) => showProvider(data));
+</script>
+</body>
+</html>
